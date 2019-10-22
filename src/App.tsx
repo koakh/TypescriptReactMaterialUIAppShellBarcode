@@ -1,13 +1,14 @@
-import React, { Fragment } from 'react';
+import React from 'react';
+import { BrowserRouter as Router } from 'react-router-dom';
 import './App.css';
 import ResponsiveDrawer from './components/layout/ResponsiveDrawer';
-import { drawerTitle, drawerCategories } from './config/constants';
+import { drawerCategories, drawerTitle } from './config/constants';
 
 const App: React.FC = () => {
   return (
-    <Fragment>
+    <Router>
       <ResponsiveDrawer title={drawerTitle} categories={drawerCategories} />
-    </Fragment>
+    </Router>
   );
 }
 

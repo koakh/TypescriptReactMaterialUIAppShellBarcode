@@ -50,6 +50,7 @@ export const routes: RouteItem[] = [
   }
 ];
 
+export const drawerWidth: number = 240;
 export const drawerTitle: string = 'MUI Starter';
 export const drawerCategories: DrawerListItem[] = routes.map((e: RouteItem) => {
   return { label: e.label, path: e.path, section: e.section, icon: e.drawerIcon }
