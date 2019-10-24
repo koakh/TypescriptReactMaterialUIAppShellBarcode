@@ -10,8 +10,9 @@ export const routes: RouteItem[] = [
     label: 'Home',
     path: "/",
     component: Home,
-    exact: true,
+    section: DrawerSections.SECTION0,
     drawerIcon: <HomeIcon />,
+    exact: true,
   },
   {
     label: 'Feed',

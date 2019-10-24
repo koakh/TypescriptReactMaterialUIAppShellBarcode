@@ -82,6 +82,8 @@ export default function ResponsiveDrawer(props: ResponsiveDrawerProps) {
   });
   // special array to add React.Components, and populate listItems splitted with section dividers
   const listItems: JSX.Element[] = Array<JSX.Element>();
+  // start with divider
+  listItems.push(<Divider />);
   // get current section from first section item
   let currentSection: DrawerSections | undefined = drawerSections[0][0].section;
   drawerSections.forEach((section, sectionIndex) => {
