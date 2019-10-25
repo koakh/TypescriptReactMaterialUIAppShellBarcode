@@ -1,6 +1,6 @@
 import { AddBox as AddBoxIcon, Fingerprint as FingerprintIcon, Home as HomeIcon, PanTool as PanToolIcon, Explore as ExploreIcon, Loyalty as LoyaltyIcon } from '@material-ui/icons';
 import React from 'react';
-import { Causes, Community, Feed, Home, Profile, SignUp } from '../components/pages';
+import { Causes, Community, Feed, Home, Profile, SignUp, CodeGenerator, CodeReader } from '../components/pages';
 import { DrawerListItem, DrawerSections, RouteItem } from '../types';
 
 export const defaultDrawerListItemIcon: JSX.Element = <AddBoxIcon />;
@@ -48,7 +48,21 @@ export const routes: RouteItem[] = [
     component: SignUp,
     section: DrawerSections.SECTION3,
     // drawerIcon: USE DEFAULT HERE,
-  }
+  },
+  {
+    label: "Code Generator",
+    path: "/code-generator",
+    component: CodeGenerator,
+    section: DrawerSections.SECTION4,
+    // drawerIcon: USE DEFAULT HERE,
+  },
+  {
+    label: "Code Reader",
+    path: "/Code-reader",
+    component: CodeReader,
+    section: DrawerSections.SECTION4,
+    // drawerIcon: USE DEFAULT HERE,
+  },
 ];
 
 export const drawerWidth: number = 240;
