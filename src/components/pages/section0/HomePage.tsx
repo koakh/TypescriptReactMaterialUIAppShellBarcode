@@ -1,6 +1,7 @@
 import * as React from 'react';
 import { Typography } from '@material-ui/core';
 import { Fragment } from 'react';
+import Counter from '../../../app/state/Counter';
 
 interface Props { }
 

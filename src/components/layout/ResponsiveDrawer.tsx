@@ -11,12 +11,12 @@ import { createStyles, makeStyles, Theme, useTheme } from '@material-ui/core/sty
 import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
 import MenuIcon from '@material-ui/icons/Menu';
-import React, { useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
+import { Link, Route, Switch, useLocation } from 'react-router-dom';
+import { ActionTypes, useDispatch } from '../../app/state';
 import { defaultDrawerListItemIcon, drawerWidth, routes } from '../../config/constants';
 import { DrawerListItem, DrawerSections } from '../../types';
-import { Route, Switch, useLocation, Link } from 'react-router-dom';
 import useDimensions from 'react-use-dimensions';
-import QRCode from 'qrcode.react';
 
 interface ResponsiveDrawerProps {
   title: string;
@@ -58,15 +58,25 @@ const useStyles = makeStyles((theme: Theme) =>
 );
 
 export default function ResponsiveDrawer(props: ResponsiveDrawerProps) {
-  const { title, categories } = props;
+  // hooks
   const classes = useStyles();
   const theme = useTheme();
   const [mobileOpen, setMobileOpen] = useState(false);
+  const [appBarRef, { width }] = useDimensions();
+  const location = useLocation();
+  const dispatch = useDispatch();
+  // useCallback for optimization, could be omitted if child components don’t rely on shallow comparing.
+  const setWidth = useCallback((width) => dispatch({ type: ActionTypes.setShellWidth, width }), [dispatch]);
+  const { title, categories } = props;
   const drawerSections: DrawerListItem[][] = [];
-  const [ref, { x, y, width }] = useDimensions();
 
-  // hooks
-  const location = useLocation();  
+  useEffect(() => {
+    const margin: number = 48;
+    const shellWidth: number = Math.trunc(mobileOpen ? width - drawerWidth - margin : width - margin);
+    console.log(shellWidth);
+    setWidth(shellWidth);
+    return () => { };
+  }, [mobileOpen, width])
 
   // handlers
   const handleDrawerToggle = () => {
@@ -87,7 +97,7 @@ export default function ResponsiveDrawer(props: ResponsiveDrawerProps) {
   // special array to add React.Components, and populate listItems splitted with section dividers
   const listItems: JSX.Element[] = Array<JSX.Element>();
   // start with divider
-  listItems.push(<Divider key={DrawerSections.SECTION0}/>);
+  listItems.push(<Divider key={DrawerSections.SECTION0} />);
   // get current section from first section item
   let currentSection: DrawerSections | undefined = drawerSections[0][0].section;
   drawerSections.forEach((section, sectionIndex) => {
@@ -97,20 +107,20 @@ export default function ResponsiveDrawer(props: ResponsiveDrawerProps) {
       listItems.push(<Divider key={sectionIndex} />);
     }
     // loop section categories
-    section.forEach(category => {               
+    section.forEach(category => {
       const icon: JSX.Element = (category.icon) ? category.icon : defaultDrawerListItemIcon;
-      listItems.push(                                                     
+      listItems.push(
         <ListItem button key={category.path} component={Link} to={category.path} selected={location.pathname === category.path} onClick={handleClickListItem}>
           <ListItemIcon>{icon}</ListItemIcon>
-          <ListItemText primary={category.label} />                                                     
+          <ListItemText primary={category.label} />
         </ListItem>
       );
-    });                                                     
+    });
   });
   // compose final drawer
   const drawer = (
     <div>
-      <div className={classes.toolbar}/>
+      <div className={classes.toolbar} />
       {listItems}
     </div>
   );
@@ -118,7 +128,7 @@ export default function ResponsiveDrawer(props: ResponsiveDrawerProps) {
   return (
     <div className={classes.root}>
       <CssBaseline />
-      <AppBar position="fixed" className={classes.appBar} ref={ref}>
+      <AppBar position="fixed" className={classes.appBar} ref={appBarRef}>
         <Toolbar>
           <IconButton
             color="inherit"
@@ -130,7 +140,7 @@ export default function ResponsiveDrawer(props: ResponsiveDrawerProps) {
             <MenuIcon />
           </IconButton>
           <Typography variant="h6" noWrap>
-            {title}:{width}
+            {title}
           </Typography>
         </Toolbar>
       </AppBar>
@@ -173,7 +183,7 @@ export default function ResponsiveDrawer(props: ResponsiveDrawerProps) {
             <Route key={route.path} exact={route.exact} path={route.path} component={route.component} />
           ))}
         </Switch>
-        <QRCode renderAs='svg' value='foobar' level={'H'} size={mobileOpen ? width - drawerWidth - 44 : width - 44}/>
+        {/* <QRCode renderAs='svg' value='foobar' level={'H'} size={mobileOpen ? width - drawerWidth - 44 : width - 44} /> */}
       </main>
     </div>
   );

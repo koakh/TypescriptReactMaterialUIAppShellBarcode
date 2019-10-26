@@ -1,8 +1,6 @@
-import React, { useRef } from 'react'
-import QrReader from 'react-qr-reader'
-import { useState } from 'react';
-import { makeStyles, createStyles } from '@material-ui/styles';
-import { Theme, Typography, Box } from '@material-ui/core';
+import { Box, Typography } from '@material-ui/core';
+import React, { useState } from 'react';
+import QrReader from 'react-qr-reader';
 
 interface Props { }
 

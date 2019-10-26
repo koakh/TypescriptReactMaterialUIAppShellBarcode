@@ -21,6 +21,7 @@
   "start_url": ".",
   "display": "fullscreen",
   "theme_color": "#000000",
+  "orientation": "portrait",
   "background_color": "#ffffff",
   "categories": [
     "solidarity",

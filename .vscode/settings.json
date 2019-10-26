@@ -1,5 +1,8 @@
 {
   "cSpell.words": [
     "splitted"
-  ]
+  ],
+  "files.exclude": {
+    "node_modules/**": true
+  }
 }
