@@ -15,6 +15,8 @@ import React, { useState } from 'react';
 import { defaultDrawerListItemIcon, drawerWidth, routes } from '../../config/constants';
 import { DrawerListItem, DrawerSections } from '../../types';
 import { Route, Switch, useLocation, Link } from 'react-router-dom';
+import useDimensions from 'react-use-dimensions';
+import QRCode from 'qrcode.react';
 
 interface ResponsiveDrawerProps {
   title: string;
@@ -61,6 +63,8 @@ export default function ResponsiveDrawer(props: ResponsiveDrawerProps) {
   const theme = useTheme();
   const [mobileOpen, setMobileOpen] = useState(false);
   const drawerSections: DrawerListItem[][] = [];
+  const [ref, { x, y, width }] = useDimensions();
+
   // hooks
   const location = useLocation();  
 
@@ -114,7 +118,7 @@ export default function ResponsiveDrawer(props: ResponsiveDrawerProps) {
   return (
     <div className={classes.root}>
       <CssBaseline />
-      <AppBar position="fixed" className={classes.appBar}>
+      <AppBar position="fixed" className={classes.appBar} ref={ref}>
         <Toolbar>
           <IconButton
             color="inherit"
@@ -126,7 +130,7 @@ export default function ResponsiveDrawer(props: ResponsiveDrawerProps) {
             <MenuIcon />
           </IconButton>
           <Typography variant="h6" noWrap>
-            {title}
+            {title}:{width}
           </Typography>
         </Toolbar>
       </AppBar>
@@ -169,6 +173,7 @@ export default function ResponsiveDrawer(props: ResponsiveDrawerProps) {
             <Route key={route.path} exact={route.exact} path={route.path} component={route.component} />
           ))}
         </Switch>
+        <QRCode renderAs='svg' value='foobar' level={'H'} size={mobileOpen ? width - drawerWidth - 44 : width - 44}/>
       </main>
     </div>
   );
