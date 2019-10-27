@@ -1,17 +1,20 @@
-import { Box, createStyles, makeStyles, Theme, Typography, Grid, Paper } from '@material-ui/core';
+import { Box, createStyles, makeStyles, Theme, Typography } from '@material-ui/core';
 import Button from '@material-ui/core/Button/Button';
 import QRCode from 'qrcode.react';
 import * as React from 'react';
 import { Fragment, useEffect, useState } from 'react';
 import uuidv4 from 'uuid/v4';
 import { useGlobalState } from '../../../app/state';
+import { subStrCode } from '../../../config/constants';
 
 export type Level = 'L' | 'M' | 'Q' | 'H';
 export type RenderAs = 'canvas' | 'svg';
 interface Props {
-  level: Level,
-  renderAs: RenderAs, 
-  maxWidth?: number
+  level?: Level,
+  renderAs?: RenderAs,
+  maxWidth?: number,
+  code?: string,
+  uuidMode?: boolean,
 }
 
 const useStyles = makeStyles((theme: Theme) =>
@@ -26,7 +29,7 @@ const useStyles = makeStyles((theme: Theme) =>
 );
 
 export const QRCodeGenerator: React.FC<Props> = (props) => {
-  const [code, setCode] = useState<string>(uuidv4())
+  const [code, setCode] = useState<string>(props.code ? props.code : uuidv4)
   const classes = useStyles();
   const [canvasDom, setCanvasDom] = useState();
   const shellWidth = useGlobalState('shellWidth');
@@ -51,7 +54,7 @@ export const QRCodeGenerator: React.FC<Props> = (props) => {
     // fake anchor to simulate click download
     let downloadLink = document.createElement('a');
     downloadLink.href = pngUrl;
-    downloadLink.download = `${code}.png`;
+    downloadLink.download = `${subStrCode(code)}.png`;
     document.body.appendChild(downloadLink);
     downloadLink.click();
     document.body.removeChild(downloadLink);
@@ -64,14 +67,17 @@ export const QRCodeGenerator: React.FC<Props> = (props) => {
         <QRCode renderAs={props.renderAs} value={code} level={props.level} size={shellWidth < props.maxWidth! ? shellWidth : props.maxWidth} />
       </Box>
       <Typography variant='body1' noWrap>
-        {code}
+        {subStrCode(code)}...
       </Typography>
-      <Button variant='contained' className={classes.button} onClick={handleGenerate}>Generate</Button>
+      {props.uuidMode && <Button variant='contained' className={classes.button} onClick={handleGenerate}>Generate</Button>}
       <Button variant='contained' className={classes.button} onClick={handleDownload}>Download</Button>
     </Fragment>
   );
 }
 
 QRCodeGenerator.defaultProps = {
+  level: 'M',
+  renderAs: 'canvas',
   maxWidth: 360,
+  uuidMode: false,
 }

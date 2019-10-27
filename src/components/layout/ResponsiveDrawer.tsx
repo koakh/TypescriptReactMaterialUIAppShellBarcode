@@ -73,7 +73,6 @@ export default function ResponsiveDrawer(props: ResponsiveDrawerProps) {
   useEffect(() => {
     const margin: number = 48;
     const shellWidth: number = Math.trunc(mobileOpen ? width - drawerWidth - margin : width - margin);
-    console.log(shellWidth);
     setWidth(shellWidth);
     return () => { };
   }, [mobileOpen, width])

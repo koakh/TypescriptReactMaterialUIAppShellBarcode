@@ -5,6 +5,9 @@ import { DrawerListItem, DrawerSections, RouteItem } from '../types';
 
 export const defaultDrawerListItemIcon: JSX.Element = <AddBoxIcon />;
 
+export const subStrCode = (code: string) => code.substr(0, 28);
+
+// route
 export const routes: RouteItem[] = [
   {
     label: 'Home',
@@ -65,6 +68,7 @@ export const routes: RouteItem[] = [
   },
 ];
 
+// drawer appShell
 export const drawerWidth: number = 240;
 export const drawerTitle: string = 'MUI Starter';
 export const drawerCategories: DrawerListItem[] = routes.map((e: RouteItem) => {

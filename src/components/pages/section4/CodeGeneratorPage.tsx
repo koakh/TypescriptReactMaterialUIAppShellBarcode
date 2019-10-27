@@ -12,7 +12,7 @@ export const CodeGenerator: React.FC<Props> = () => {
         CodeGenerator
       </Typography>
       <Box>
-        <QRCodeGenerator level='H' renderAs='canvas' />
+        <QRCodeGenerator uuidMode={true}/>
       </Box>
     </Fragment>
   );

@@ -1,6 +1,7 @@
 import { Box, Typography } from '@material-ui/core';
 import React, { useState } from 'react';
 import QrReader from 'react-qr-reader';
+import { subStrCode } from '../../../config/constants';
 
 interface Props { }
 
@@ -19,7 +20,7 @@ export const QRCodeReader: React.FC<Props> = () => {
       })
     }
     // audioPlayerRef.play()
-    setScanList([...scanList, data]);
+    setScanList([...scanList, data.result]);
   }
 
   const handleError = (err: any) => {
@@ -36,8 +37,8 @@ export const QRCodeReader: React.FC<Props> = () => {
           onScan={handleScan}
           style={{ width: '100%' }}
         />
-        <Typography variant="body1" noWrap>
-          {state.result}
+        <Typography variant="body1">
+          {subStrCode(state.result)}
         </Typography>
         {scanList.length ? <p>please scan some stuff</p> : scanList.map(e => <Typography key={e} variant="body2" noWrap>{e}</Typography>)}
       </Box>
