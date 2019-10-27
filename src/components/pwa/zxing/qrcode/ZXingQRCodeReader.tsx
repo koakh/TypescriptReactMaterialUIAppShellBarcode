@@ -1,10 +1,11 @@
 import { Box, Button, Radio, makeStyles, Theme, createStyles, FormControl, FormLabel, RadioGroup, FormControlLabel } from '@material-ui/core';
-import { BrowserMultiFormatReader, NotFoundException, VideoInputDevice } from '@zxing/library';
+import { BrowserMultiFormatReader, NotFoundException, VideoInputDevice, Result, Exception } from '@zxing/library';
 import React, { useEffect, Fragment, ReactComponentElement, useState, ChangeEvent } from 'react';
-// import qrCodeImage from '../../../../assets/images/qrcode.png';
 import { useGlobalState } from '../../../../app/state/state';
+import { playBeep } from '../../../../utils/util';
+import { MaxHeightTextarea } from '../../../common/MaxHeightTextarea';
 
-interface Props { 
+interface Props {
   maxWidth?: number,
 }
 
@@ -20,6 +21,7 @@ export const ZXingQRCodeReader: React.FC<Props> = (props) => {
   const [videoInputDevices, setVideoInputDevices] = useState<VideoInputDevice[]>([]);
   const [selectedDeviceIndex, setSelectedDeviceIndex] = useState<number>(0);
   const [started, setStarted] = useState(false);
+  const [output, setOutput] = useState<string | null>(null)
   // const qrCodeImageRef = useRef(null);
   let codeReader: BrowserMultiFormatReader = new BrowserMultiFormatReader();
 
@@ -30,7 +32,7 @@ export const ZXingQRCodeReader: React.FC<Props> = (props) => {
     width: shellWidth < props.maxWidth! ? shellWidth : props.maxWidth,
     height: 270,
   }
-  
+
   useEffect(() => {
     init();
     return () => { };
@@ -52,23 +54,24 @@ export const ZXingQRCodeReader: React.FC<Props> = (props) => {
 
   const handleStart = (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
     const device: VideoInputDevice = videoInputDevices[selectedDeviceIndex];
-    codeReader.decodeFromVideoDevice(device.deviceId, 'video', (result, err) => {
+    setStarted(!started);
+    console.log(`Started continuos decode from camera with id ${selectedDeviceIndex}`)
+    codeReader.decodeFromVideoDevice(device.deviceId, 'video', (result, error) => {
       if (result) {
-        console.log(result)
-        // document.getElementById('result').textContent = result.text
+        playBeep();
+        setOutput(`${output}\n${result.getText()}:${result.getBarcodeFormat()}`);
+        console.log(result);
       }
-      if (err && !(err instanceof NotFoundException)) {
-        console.error(err)
-        // document.getElementById('result').textContent = err
+      if (error && !(error instanceof NotFoundException)) {
+        setOutput(`${output}\n${error.message}`);
+        console.error(error)
       }
     })
-    console.log(`Started continuos decode from camera with id ${selectedDeviceIndex}`)
-    setStarted(!started);
   }
 
   const handleReset = (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
     codeReader.reset();
-    // document.getElementById('result').textContent = '';
+    setOutput(null);
     console.log('Reset.');
     setStarted(!started);
   }
@@ -78,7 +81,6 @@ export const ZXingQRCodeReader: React.FC<Props> = (props) => {
     setSelectedDeviceIndex(Number((event.target as HTMLInputElement).value));
   };
 
-  // <img ref={qrCodeImageRef} alt='some code' src={qrCodeImage} />
   return (
     <Fragment>
       <Box component='video' id='video' style={videoStyle} />
@@ -94,6 +96,11 @@ export const ZXingQRCodeReader: React.FC<Props> = (props) => {
           ))}
         </RadioGroup>
       </FormControl>
+      <Box>
+        <MaxHeightTextarea>
+          {output}
+        </MaxHeightTextarea>
+      </Box>
     </Fragment>
   )
 }

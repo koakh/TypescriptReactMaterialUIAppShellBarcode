@@ -6,7 +6,7 @@ import { Fragment, useEffect, useState } from 'react';
 import uuidv4 from 'uuid/v4';
 import { useGlobalState } from '../../../app/state';
 import { subStrCode } from '../../../config/constants';
-import { playBeep } from '../../../types/utils/util';
+import { playBeep } from '../../../utils/util';
 
 export type Level = 'L' | 'M' | 'Q' | 'H';
 export type RenderAs = 'canvas' | 'svg';

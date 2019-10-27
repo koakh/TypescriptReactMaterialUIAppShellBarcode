@@ -2,7 +2,7 @@ import { Box, Typography } from '@material-ui/core';
 import React, { useState } from 'react';
 import QrReader from 'react-qr-reader';
 import { subStrCode } from '../../../config/constants';
-import { playBeep } from '../../../types/utils/util';
+import { playBeep } from '../../../utils/util';
 import { useGlobalState } from '../../../app/state';
 
 interface Props {

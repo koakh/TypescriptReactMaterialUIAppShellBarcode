@@ -1,4 +1,4 @@
-import beepSound from '../../assets/sounds/beep.mp3';
+import beepSound from '../assets/sounds/beep.mp3';
 
 export const playBeep = async () => {
   playSound(beepSound);
