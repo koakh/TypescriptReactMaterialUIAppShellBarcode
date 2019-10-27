@@ -6,6 +6,7 @@ import { Fragment, useEffect, useState } from 'react';
 import uuidv4 from 'uuid/v4';
 import { useGlobalState } from '../../../app/state';
 import { subStrCode } from '../../../config/constants';
+import { playBeep } from '../../../types/utils/util';
 
 export type Level = 'L' | 'M' | 'Q' | 'H';
 export type RenderAs = 'canvas' | 'svg';
@@ -29,8 +30,8 @@ const useStyles = makeStyles((theme: Theme) =>
 );
 
 export const QRCodeGenerator: React.FC<Props> = (props) => {
-  const [code, setCode] = useState<string>(props.code ? props.code : uuidv4)
   const classes = useStyles();
+  const [code, setCode] = useState<string>(props.code ? props.code : uuidv4)
   const [canvasDom, setCanvasDom] = useState();
   const shellWidth = useGlobalState('shellWidth');
 
@@ -43,6 +44,7 @@ export const QRCodeGenerator: React.FC<Props> = (props) => {
   }, []);
 
   const handleGenerate = () => {
+    playBeep();
     setCode(uuidv4());
   }
 
@@ -78,6 +80,6 @@ export const QRCodeGenerator: React.FC<Props> = (props) => {
 QRCodeGenerator.defaultProps = {
   level: 'M',
   renderAs: 'canvas',
-  maxWidth: 360,
   uuidMode: false,
+  maxWidth: 360,
 }

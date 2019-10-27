@@ -4,7 +4,6 @@ import { Causes, Community, Feed, Home, Profile, SignUp, CodeGenerator, CodeRead
 import { DrawerListItem, DrawerSections, RouteItem } from '../types';
 
 export const defaultDrawerListItemIcon: JSX.Element = <AddBoxIcon />;
-
 export const subStrCode = (code: string) => code.substr(0, 28);
 
 // route
