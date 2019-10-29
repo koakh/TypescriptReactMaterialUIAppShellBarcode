@@ -1,9 +1,9 @@
-import { Box, Button, Radio, makeStyles, Theme, createStyles, FormControl, FormLabel, RadioGroup, FormControlLabel } from '@material-ui/core';
-import { BrowserMultiFormatReader, NotFoundException, VideoInputDevice, Result, Exception } from '@zxing/library';
-import React, { useEffect, Fragment, ReactComponentElement, useState, ChangeEvent } from 'react';
+import { Box, Button, createStyles, FormControl, FormControlLabel, FormLabel, makeStyles, Radio, RadioGroup, Theme, Typography } from '@material-ui/core';
+import { BrowserMultiFormatReader, NotFoundException, VideoInputDevice } from '@zxing/library';
+import React, { ChangeEvent, Fragment, useEffect, useState } from 'react';
 import { useGlobalState } from '../../../../app/state/state';
+import { subStrCode } from '../../../../config/constants';
 import { playBeep } from '../../../../utils/util';
-import { MaxHeightTextarea } from '../../../common/MaxHeightTextarea';
 
 interface Props {
   maxWidth?: number,
@@ -21,7 +21,8 @@ export const ZXingQRCodeReader: React.FC<Props> = (props) => {
   const [videoInputDevices, setVideoInputDevices] = useState<VideoInputDevice[]>([]);
   const [selectedDeviceIndex, setSelectedDeviceIndex] = useState<number>(0);
   const [started, setStarted] = useState(false);
-  const [output, setOutput] = useState<string | null>(null)
+  // const [output, setOutput] = useState<string | null>(null)
+  const [scanList, setScanList] = useState<string[]>([])
   // const qrCodeImageRef = useRef(null);
   let codeReader: BrowserMultiFormatReader = new BrowserMultiFormatReader();
 
@@ -59,11 +60,13 @@ export const ZXingQRCodeReader: React.FC<Props> = (props) => {
     codeReader.decodeFromVideoDevice(device.deviceId, 'video', (result, error) => {
       if (result) {
         playBeep();
-        setOutput(`${output}\n${result.getText()}:${result.getBarcodeFormat()}`);
+        setScanList([...scanList, `${result.getText()}:${result.getBarcodeFormat()}`]);
+        // setOutput(`${output}\n${result.getText()}:${result.getBarcodeFormat()}`);
         console.log(result);
       }
       if (error && !(error instanceof NotFoundException)) {
-        setOutput(`${output}\n${error.message}`);
+        // setOutput(`${output}\n${error.message}`);
+        setScanList([...scanList, `${error}`]);
         console.error(error)
       }
     })
@@ -71,7 +74,7 @@ export const ZXingQRCodeReader: React.FC<Props> = (props) => {
 
   const handleReset = (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
     codeReader.reset();
-    setOutput(null);
+    setScanList([]);
     console.log('Reset.');
     setStarted(!started);
   }
@@ -96,11 +99,10 @@ export const ZXingQRCodeReader: React.FC<Props> = (props) => {
           ))}
         </RadioGroup>
       </FormControl>
-      <Box>
-        <MaxHeightTextarea>
-          {output}
-        </MaxHeightTextarea>
-      </Box>
+      {scanList.length ?
+        scanList.map(e => <Typography key={e} variant="body2">{subStrCode(e)}</Typography>)
+        : <p>please scan some stuff</p>
+      }
     </Fragment>
   )
 }
