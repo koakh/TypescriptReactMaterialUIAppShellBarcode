@@ -75,7 +75,7 @@ export default function ResponsiveDrawer(props: ResponsiveDrawerProps) {
     const shellWidth: number = Math.trunc(mobileOpen ? width - drawerWidth - margin : width - margin);
     setWidth(shellWidth);
     return () => { };
-  }, [mobileOpen, width])
+  }, [mobileOpen, width, setWidth])
 
   // handlers
   const handleDrawerToggle = () => {

@@ -36,3 +36,23 @@ $ cat rsa_1024_pub.pem | ccc
 - [Introduction to JSON Web Tokens](https://jwt.io/introduction/)
 - [Using x.509 certs with JWS/JWT/JWK](https://gist.github.com/jasonk000/26f987681b56fe34c235248c980b5c2e)
 - [Demo: Using Public/Private keys to make/verify JavaScript Web Tokens (JWT)](https://github.com/BlitzkriegSoftware/NodeJwtRsa)
+
+## React Hook useEffect has a missing dependency: 'init'. Either include it or remove the dependency array  react-hooks/exhaustive-deps
+
+- [How to fix missing dependency warning when using useEffect React Hook?](https://stackoverflow.com/questions/55840294/how-to-fix-missing-dependency-warning-when-using-useeffect-react-hook)
+
+> optional use `// eslint-disable-next-line react-hooks/exhaustive-deps`
+
+here we have a init function in `useEffect` that we want to fire only once, to use it use like that `useEffect(() => { init(); })`, without dependency array
+
+`QRCodeReader.tsx`
+
+```typescript
+useEffect(() => {
+  init();
+  // cleanUp
+  return () => { };
+  // don't use dependency array `}, []);` here else we have
+  // React Hook useEffect has a missing dependency: 'init'. Either include it or remove the dependency array  react-hooks/exhaustive-deps
+});
+```

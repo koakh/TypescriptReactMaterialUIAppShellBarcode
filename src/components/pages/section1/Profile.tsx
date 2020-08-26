@@ -10,9 +10,9 @@ export const Profile: React.FC<Props> = () => {
 3n96LlF++6LumW8ePdW7k+k/Z7Rc3WknkGI8NXTBFfSR5ja4kRhFM+tsKTn4W+Av
 /7gDfTgxjqFsWkWFc7Mi6GaJlWn8M8ZvI/LFTYAAaej4+EdgRfaS6G5zujkjZwxt
 tpIkOJUnwMuw+pRnywIDAQAB`;
-  const codeFinal: string = `-----BEGIN PUBLIC KEY-----
-${code}
------END PUBLIC KEY-----`;
+//   const codeFinal: string = `-----BEGIN PUBLIC KEY-----
+// ${code}
+// -----END PUBLIC KEY-----`;
 
   return (
     <Fragment>

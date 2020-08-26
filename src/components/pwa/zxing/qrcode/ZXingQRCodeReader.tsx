@@ -34,11 +34,6 @@ export const ZXingQRCodeReader: React.FC<Props> = (props) => {
     height: 270,
   }
 
-  useEffect(() => {
-    init();
-    return () => { };
-  }, []);
-
   const init = async () => {
     try {
       console.log('ZXing code reader initialized')
@@ -52,6 +47,14 @@ export const ZXingQRCodeReader: React.FC<Props> = (props) => {
       console.error(error)
     }
   };
+
+  useEffect(() => {
+    init();
+    // cleanUp
+    return () => { };
+    // don't use dependency array `}, []);` here else we have
+    // React Hook useEffect has a missing dependency: 'init'. Either include it or remove the dependency array  react-hooks/exhaustive-deps
+  });
 
   const handleStart = (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
     const device: VideoInputDevice = videoInputDevices[selectedDeviceIndex];
