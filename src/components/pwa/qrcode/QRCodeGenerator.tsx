@@ -1,9 +1,8 @@
 import { Box, createStyles, makeStyles, Theme, Typography } from '@material-ui/core';
 import Button from '@material-ui/core/Button/Button';
 import QRCode from 'qrcode.react';
-import * as React from 'react';
-import { Fragment, useEffect, useState } from 'react';
-import uuidv4 from 'uuid/v4';
+import React, { Fragment, useEffect, useState } from 'react';
+import { v4 as uuidv4 } from 'uuid';
 import { useGlobalState } from '../../../app/state';
 import { subStrCode } from '../../../config/constants';
 import { playBeep } from '../../../utils/util';
@@ -32,7 +31,7 @@ const useStyles = makeStyles((theme: Theme) =>
 export const QRCodeGenerator: React.FC<Props> = (props) => {
   const classes = useStyles();
   const [code, setCode] = useState<string>(props.code ? props.code : uuidv4)
-  const [canvasDom, setCanvasDom] = useState();
+  const [canvasDom, setCanvasDom] = useState<Element | null | any>();
   const shellWidth = useGlobalState('shellWidth');
 
   useEffect(() => {
