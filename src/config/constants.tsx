@@ -78,7 +78,7 @@ export const routes: RouteItem[] = [
     component: SignUp,
     section: DrawerSections.SECTION4,
     // drawerIcon: USE DEFAULT HERE,
-  },
+  }
 ];
 
 // drawer appShell
