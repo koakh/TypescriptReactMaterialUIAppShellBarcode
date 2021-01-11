@@ -11,7 +11,7 @@
   "dependencies": {
     "@material-ui/core": "^4.11.0",
     "@material-ui/icons": "^4.9.1",
-    "@zxing/library": "^0.17.1",
+    "@zxing/library": "^0.18.3",
     "clsx": "^1.1.1",
     "npm": "^6.12.0",
     "qrcode.react": "^1.0.0",
